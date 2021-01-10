@@ -8,10 +8,11 @@
 library(shiny)
 library(DT)
 library(DBI)
+source("ui.R")
 
 # Define server logic
 shinyServer(function(input, output, session) {
-
+    router$server(input, output, session)
     # Connect to PostgreSQL
     con <- dbConnect(RPostgres::Postgres(), dbname='pds-project',
                      host = 'pds-group-project.carynrwc1v04.ap-southeast-1.rds.amazonaws.com',
