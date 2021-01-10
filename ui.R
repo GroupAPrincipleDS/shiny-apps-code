@@ -7,7 +7,7 @@
 
 library(shiny)
 library(DT)
-includeCSS("")
+library(shiny.router)
 
 menu <- (
     tags$ul(
