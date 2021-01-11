@@ -49,8 +49,8 @@ shinyServer(function(input, output, session) {
                              sep="")
             }
             sql <- paste(sql,
-                         "GROUP BY Title, Brand ORDER BY overall_avg DESC, review_count DESC ",
-#                         "LIMIT 10",
+                         "GROUP BY Title, Brand ORDER BY review_count DESC, overall_avg DESC ",
+#                         "LIMIT 10 ",
                          sep="")
 
             #cat(sql,"\n")
@@ -59,10 +59,10 @@ shinyServer(function(input, output, session) {
     })
     # dataset for good review
     
-    datasource <- eventReactive(input$btnSearch2,{
+    datasource <- eventReactive(input$productselect,{
         good_t_w <- 
             t %>% 
-            filter(title == input$ProductSearch) %>%
+            filter(title == input$productselect[5]) %>%
             filter(overall>=3) %>%
             select(summary)
         mycorpus <- Corpus(VectorSource(good_t_w $summary))
@@ -87,11 +87,11 @@ shinyServer(function(input, output, session) {
     
     # dataset for bad review
     
-    datasource_v2 <- eventReactive(input$btnSearch2,{
+    datasource_v2 <- eventReactive(input$productselect,{
         
         bad_t_w <- 
             t %>% 
-            filter(title == input$ProductSearch) %>%
+            filter(title == input$productselect[5]) %>%
             filter(overall<3) %>%
             select(summary)
         mycorpus_v2 <- Corpus(VectorSource(bad_t_w $summary))
