@@ -1,0 +1,53 @@
+html{
+background: rgb(227,227,227);
+background: radial-gradient(circle, rgba(227,227,227,1) 0%, rgba(248,253,254,1) 99%);
+}
+body {
+  background-color: transparent;
+}
+ul {
+  background: rgb(2,0,36);
+background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(94,94,205,1) 0%, rgba(0,212,255,1) 100%);
+    display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  list-style-type: none;
+  border-radius: 7px;
+}
+ul li a {
+  color: #ffffff;
+    display: block;
+  font-size: 1.6rem;
+  padding: 1.5rem 1.6rem;
+  text-decoration: none;
+  transition: all, 0.1s;
+  font-weight: bold;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: #ffffff;
+    text-decoration: none;
+}
+
+ul li a:hover {
+  background-color: #1589d1;
+    color: #ffffff;
+}
+ol {
+  font-size: 2.5rem;
+}
+#groupName{
+  font-size: 3rem;
+}
+#aboutus{
+  font-size: 2.5rem;
+}
+#title {
+  margin-right: 12em;
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: bold;
+  position: absolute;
+  margin-top: 1.1rem;
+  margin-left: 1.2rem;
+}
