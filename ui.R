@@ -63,21 +63,21 @@ shinyUI(fluidPage(
     tags$head(
         tags$script(HTML('
         Shiny.addCustomMessageHandler("updatechildrow", function(data) {
-            console.log(data);
+            //console.log(data);
             reviews = data[1];
             reviews_count = reviews["overall"].length;
             
             dataset = [];
             
             for (i=0; i<reviews_count; i++) {
-                data = [];
-                data.push(reviews["overall"][i]);
-                data.push(reviews["vote"][i]);
-                data.push(reviews["summary"][i]);
-                data.push(reviews["reviewtext"][i]);
-                dataset.push(data);
+                d = [];
+                d.push(reviews["overall"][i]);
+                d.push(reviews["vote"][i]);
+                d.push(reviews["summary"][i]);
+                d.push(reviews["reviewtext"][i]);
+                dataset.push(d);
             }
-            $("#child_details").DataTable({
+            $("#child_details"+data[0]).DataTable({
                 data: dataset,
                 columns: [
                     { title: "Rating" },

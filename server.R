@@ -157,7 +157,7 @@ shinyServer(function(input, output, session) {
                     row.child.hide();
                 }
                 else {
-                    row.child('<table id=\"child_details\"></table>').show();
+                    row.child('<table id=\"child_details'+index+'\"></table>').show();
                     format(row);
                 }
             });
