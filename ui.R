@@ -23,7 +23,9 @@ root_page <-     # Sidebar layout with a product search input and table output
         sidebarPanel(
             textInput("txtSearch", "Search product:"),
             selectInput("selectBrand", "Brand", c('All')),
-            actionButton("btnSearch", "Search")
+            actionButton("btnSearch", "Search"),
+            plotOutput("good_review"),
+            plotOutput("bad_review")
         ),
         
         # Show a table output of searched product
