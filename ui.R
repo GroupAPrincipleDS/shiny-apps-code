@@ -26,14 +26,14 @@ root_page <-     # Sidebar layout with a product search input and table output
             actionButton("btnSearch", "Search"),
             textInput(inputId = "ProductSearch",label = "Product Full Name: ",
                       value = "LG LT700P Refrigerator Water Filter, Filters up to 300 Gallons of Water, Compatible with Select LG Multi-Door Refrigerators with SlimSpace Plus Ice System"),
-            actionButton("btnSearch2", "Search Product Review")
+            actionButton("btnSearch2", "Search Product Review"),
+            plotOutput("good_review"),
+            plotOutput("bad_review")
         ),
         
         # Show a table output of searched product
         mainPanel(
-            dataTableOutput("tblProducts"),
-            plotOutput("good_review"),
-            plotOutput("bad_review")
+            dataTableOutput("tblProducts")
         )
     )
 #Add in the documenation into following page 
