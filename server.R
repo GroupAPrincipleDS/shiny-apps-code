@@ -8,17 +8,16 @@
 library(shiny)
 library(DT)
 library(DBI)
+library(wordcloud)
+library(tm)
+library(colourpicker)
+library(RWeka)
+library(dplyr)
 source("ui.R")
 
 # Define server logic
 shinyServer(function(input, output, session) {
     router$server(input, output, session)
-    # Connect to PostgreSQL
-    con <- dbConnect(RPostgres::Postgres(), dbname='pds-project',
-                     host = 'pds-group-project.carynrwc1v04.ap-southeast-1.rds.amazonaws.com',
-                     port = 5432,
-                     user = 'pdsgroupproject',
-                     password = 'pdsadmin123')
 
     # Get list of brands from title search and update brand selection input.
     brands <- observeEvent(input$txtSearch, {
@@ -58,7 +57,86 @@ shinyServer(function(input, output, session) {
             res <- dbGetQuery(con, sql)
         }
     })
+    # dataset for good review
     
+    datasource <- eventReactive(input$btnSearch2,{
+        good_t_w <- 
+            t %>% 
+            filter(title == input$ProductSearch) %>%
+            filter(overall>=3) %>%
+            select(summary)
+        mycorpus <- Corpus(VectorSource(good_t_w $summary))
+        mycorpus <-tm_map(mycorpus,content_transformer(tolower))
+        mycorpus <- tm_map(mycorpus, removeNumbers)
+        mycorpus <- tm_map(mycorpus, removeWords,stopwords("english"))
+        mycorpus <- tm_map(mycorpus,removePunctuation)
+        mycorpus <- tm_map(mycorpus,stripWhitespace)
+        mycorpus <- tm_map(mycorpus, removeWords, c("one","two","three","four","five", "star","stars")) 
+        
+        
+        
+        token_delim <- " \\t\\r\\n.!?,;\"()"
+        bitoken <- NGramTokenizer(mycorpus, Weka_control(min=2,max=2, delimiters = token_delim))
+        bitoken <- bitoken[!bitoken %in% c("language =","list language","= en")]
+        two_word <- data.frame(table(bitoken))
+        sort_two <- two_word[order(two_word$Freq,decreasing=TRUE),]
+        
+        return(sort_two)
+    })
+    
+    
+    # dataset for bad review
+    
+    datasource_v2 <- eventReactive(input$btnSearch2,{
+        
+        bad_t_w <- 
+            t %>% 
+            filter(title == input$ProductSearch) %>%
+            filter(overall<3) %>%
+            select(summary)
+        mycorpus_v2 <- Corpus(VectorSource(bad_t_w $summary))
+        mycorpus_v2 <-tm_map(mycorpus_v2,content_transformer(tolower))
+        mycorpus_v2 <- tm_map(mycorpus_v2, removeNumbers)
+        mycorpus_v2 <- tm_map(mycorpus_v2, removeWords,stopwords("english"))
+        mycorpus_v2 <- tm_map(mycorpus_v2,removePunctuation)
+        mycorpus_v2 <- tm_map(mycorpus_v2,stripWhitespace)
+        mycorpus_v2 <- tm_map(mycorpus_v2, removeWords, c("one","two","three","four","five", "star","stars")) 
+        
+        
+        
+        token_delim_v2 <- " \\t\\r\\n.!?,;\"()"
+        bitoken_v2 <- NGramTokenizer(mycorpus_v2, Weka_control(min=2,max=2, delimiters = token_delim_v2))
+        bitoken_v2 <- bitoken_v2[!bitoken_v2 %in% c("language =","list language","= en")]
+        two_word_v2 <- data.frame(table(bitoken_v2))
+        sort_two_v2 <- two_word_v2[order(two_word_v2$Freq,decreasing=TRUE),]
+        
+        return(sort_two_v2)
+    })
+    # wordcloud for good review
+    
+    output$good_review <- renderPlot({
+        x <- datasource()$bitoken
+        y <- datasource()$Freq
+        minfreq_bigram <- 2
+        
+        wordcloud(x,y,random.order=FALSE,scale = c(3,0.5),min.freq = minfreq_bigram,colors = brewer.pal(8,"Dark2"),
+                  max.words=50)
+        
+        
+    })
+    
+    # wordcloud for bad review
+    
+    output$bad_review <- renderPlot({
+        x <- datasource_v2()$bitoken
+        y <- datasource_v2()$Freq
+        minfreq_bigram <- 2
+        
+        wordcloud(x,y,random.order=FALSE,scale = c(3,0.5),min.freq = minfreq_bigram,colors = brewer.pal(8,"Dark2"),
+                  max.words=50)
+        
+        
+    })
     output$tblProducts <- renderDataTable(
         { df() },
         filter = list(position='top', clear=FALSE),
