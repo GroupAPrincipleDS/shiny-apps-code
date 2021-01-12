@@ -8,4 +8,3 @@ con <- dbConnect(RPostgres::Postgres(), dbname='pds-project',
                  password = 'pdsadmin123')
 
 # dataset that will be used in wordcloud	
-t <- dbReadTable(con,'data_with_details')

@@ -22,7 +22,7 @@ shinyServer(function(input, output, session) {
     # Get list of brands from title search and update brand selection input.
     brands <- observeEvent(input$txtSearch, {
         if (input$txtSearch != "") {
-            sql <- paste("SELECT DISTINCT brand FROM data_with_details dwd ",
+            sql <- paste("SELECT DISTINCT brand FROM amazon_prod_reviews dwd ",
                          "WHERE UPPER(title) LIKE '%", toupper(input$txtSearch), "%' ",
                          "ORDER BY brand",
                          sep="")
@@ -38,7 +38,7 @@ shinyServer(function(input, output, session) {
     df <- eventReactive(input$btnSearch, {
         if (input$txtSearch != "") {
             sql <- paste("SELECT AVG(overall) overall_avg, COUNT(overall) review_count, ",
-                         "title, brand FROM data_with_details ",
+                         "title, brand FROM amazon_prod_reviews ",
                          "WHERE UPPER(title) LIKE '%", toupper(input$txtSearch), "%' ",
                          sep="")
 
@@ -57,13 +57,18 @@ shinyServer(function(input, output, session) {
             res <- dbGetQuery(con, sql)
         }
     })
+
     # dataset for good review
     
     datasource <- eventReactive(input$productselect,{
+        wordCloudDf <- data.frame()
+        sql <- paste("SELECT overall, summary FROM amazon_prod_reviews ",
+                     "WHERE title = '", input$productselect[5], "' ",
+                     "AND overall >= 3",
+                     sep="")
+        wordCloudDf <- dbGetQuery(con, sql)
         good_t_w <- 
-            t %>% 
-            filter(title == input$productselect[5]) %>%
-            filter(overall>=3) %>%
+            wordCloudDf %>% 
             select(summary)
         mycorpus <- Corpus(VectorSource(good_t_w $summary))
         mycorpus <-tm_map(mycorpus,content_transformer(tolower))
@@ -80,7 +85,7 @@ shinyServer(function(input, output, session) {
         bitoken <- bitoken[!bitoken %in% c("language =","list language","= en")]
         two_word <- data.frame(table(bitoken))
         sort_two <- two_word[order(two_word$Freq,decreasing=TRUE),]
-        
+        remove(wordCloudDf)
         return(sort_two)
     })
     
@@ -88,11 +93,13 @@ shinyServer(function(input, output, session) {
     # dataset for bad review
     
     datasource_v2 <- eventReactive(input$productselect,{
-        
+        sql <- paste("SELECT overall, summary FROM amazon_prod_reviews ",
+                     "WHERE title = '", input$productselect[5], "' ",
+                     "AND overall < 3",
+                     sep="")
+        wordCloudDf <- dbGetQuery(con, sql)
         bad_t_w <- 
-            t %>% 
-            filter(title == input$productselect[5]) %>%
-            filter(overall<3) %>%
+            wordCloudDf %>% 
             select(summary)
         mycorpus_v2 <- Corpus(VectorSource(bad_t_w $summary))
         mycorpus_v2 <-tm_map(mycorpus_v2,content_transformer(tolower))
@@ -109,7 +116,7 @@ shinyServer(function(input, output, session) {
         bitoken_v2 <- bitoken_v2[!bitoken_v2 %in% c("language =","list language","= en")]
         two_word_v2 <- data.frame(table(bitoken_v2))
         sort_two_v2 <- two_word_v2[order(two_word_v2$Freq,decreasing=TRUE),]
-        
+        remove(wordCloudDf)
         return(sort_two_v2)
     })
     # wordcloud for good review
@@ -168,7 +175,7 @@ shinyServer(function(input, output, session) {
         # print(input$productselect[1])
         # print(input$productselect[5])
 
-        sql <- paste("SELECT overall, vote, summary, reviewtext FROM data_with_details ",
+        sql <- paste("SELECT overall, vote, summary, reviewtext FROM amazon_prod_reviews ",
                    "WHERE title=",dbQuoteString(con,input$productselect[5]), sep="")
         res <- dbGetQuery(con, sql)
         session$sendCustomMessage("updatechildrow", list(input$productselect[1], res))
