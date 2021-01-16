@@ -6,6 +6,7 @@
 #
 
 library(shiny)
+library(shinythemes)
 library(DT)
 library(shiny.router)
 
@@ -33,23 +34,41 @@ root_page <-     # Sidebar layout with a product search input and table output
             dataTableOutput("tblProducts")
         )
     )
+
 #Add in the documenation into following page 
 documentation_page <- div(
-    p("this is just for sample you can remove the slider once the documentation is ready!"),
-    sliderInput("obs", "Number of observations:", min = 10, max = 500, value = 100)
-    )
-
-#This is sample page we can add in more details or remove it if necessary
-about_us <- div(
-    titlePanel("Group A"),
-    p("We are group of four people with the details as per bellow:", id = "aboutus"),
-    tags$ol(
-        tags$li("Muhammad Umair (S2001767)"),
-        tags$li("Kong"),
-        tags$li("Boon"),
-        tags$li("Liow"),
-    )
-)
+    br(),
+    p(strong("Introduction"), style = "font-size:500px;"),
+    p("In most of the common rating system only showcase the average rating scale from 1 to 5. However, this type of rating showcase are too general and if buyer want to know the true comment/review of the interested product, they will have to browser through the comment section one by one.
+      Therefore, the purpose of this apps is to help buyers to quickly browse through the reviews summary and gain more detailed understanding on the product via word cloud. Word Cloud is a visualization tool where an imaged composed of words used in a particular text or subject, 
+      in which the size of each word indicates its frequency or importance. Two word clouds are being generated to analysis the positive reviews and negative reviews.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+    br(),
+    br(),
+    p(strong("Apps Guideline"), style = "font-size:500px;"),
+      p("1. User can search the interested appliances in the search column. User can choose to narrow the search by selecting the brand of ideal appliances.",
+        br(),"2. A table with the selected type of appliances will be listed based on the review counts.",
+        br(),"3. User can further select the product interested to view the word cloud. Table of review summary also will be shown.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+      br(),
+      br(),
+      p(strong("Dataset"), style = "font-size:500px;"),
+        p("The review dataset used in building this apps is the Appliances's data retrieved from Amazon (2018) where it contained total of 602,777 reviews and summaries. The dataset is introduced into the SQL server for data pre-processing purpose.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+        p("For more information regardign the dataset please check the",em("Amazon Review Data (2018)'s"),"page by clicking",
+          a(href="http://deepyeti.ucsd.edu/jianmo/amazon/index.html", "Here",target="_blank"),style="text-align:center;color:black",width=2)
+      )
+      
+      #This is sample page we can add in more details or remove it if necessary
+      about_us <- div(
+          titlePanel("Group A"),
+          p(strong("We are group of students from University Malaya Malaysia working on this shinyapps to develop a tool for Amazon Product Rating and Review sentiment analysis."), id = "aboutus"),
+          br(),
+          p("Below is the details of our group."),
+          tags$ol(
+              tags$li("Muhammad Umair (S2001767)"),
+              tags$li("Kong Mun Yeen (17055182)"),
+              tags$li("Teo Boon Long (17198093)"),
+              tags$li("Liow Wei Jie (S2016102)")
+          )
+      )
 router <- make_router(
     route("/", root_page),
     route("other", documentation_page),
