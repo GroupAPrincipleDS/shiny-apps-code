@@ -101,6 +101,8 @@ shinyUI(fluidPage(
                 d.push(reviews["reviewtext"][i]);
                 dataset.push(d);
             }
+            $("div[id*=\'child_details\']:not(#child_details+data[0])").parent().parent().remove();
+            $("tr.selected").removeClass("selected");
             $("#child_details"+data[0]).DataTable({
                 data: dataset,
                 columns: [
