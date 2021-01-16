@@ -39,15 +39,15 @@ root_page <-     # Sidebar layout with a product search input and table output
 documentation_page <- div(
     br(),
     p(strong("Introduction"), style = "font-size:500px;"),
-    p("In most of the common rating system only showcase the average rating scale from 1 to 5. However, this type of rating showcase are too general and if buyer want to know the true comment/review of the interested product, they will have to browser through the comment section one by one.
-      Therefore, the purpose of this apps is to help buyers to quickly browse through the reviews summary and gain more detailed understanding on the product via word cloud. Word Cloud is a visualization tool where an imaged composed of words used in a particular text or subject, 
+    p("In most of the common rating system only showcase the average rating scale from 1 to 5. However, this type of rating showcase is too general and if buyer want to know the true comments or reviews of the interested product, they will have to browser through the comment section one by one.
+      Therefore, the purpose of this apps is to help buyers to quickly browse through the review summaries and gain more detailed understanding on the product via word cloud. Word Cloud is a visualization tool where an imaged composed of words used in a particular text or subject, 
       in which the size of each word indicates its frequency or importance. Two word clouds are being generated to analysis the positive reviews and negative reviews.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
     br(),
     br(),
     p(strong("Apps Guideline"), style = "font-size:500px;"),
       p("1. User can search the interested appliances in the search column. User can choose to narrow the search by selecting the brand of ideal appliances.",
         br(),"2. A table with the selected type of appliances will be listed based on the review counts.",
-        br(),"3. User can further select the product interested to view the word cloud. Table of review summary also will be shown.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+        br(),"3. User can further select the product interested to view the word cloud. Table of the review's summary also will be shown.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
       br(),
       br(),
       p(strong("Dataset"), style = "font-size:500px;"),
