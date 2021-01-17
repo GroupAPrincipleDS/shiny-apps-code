@@ -50,15 +50,15 @@ documentation_page <- div(
         br(),"3. User can further select the product interested to view the word cloud. Table of the review's summary also will be shown.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
       br(),
       br(),
-      p(strong("Dataset"), style = "font-size:2rem;"),
-        p("The review dataset used in building this apps is the Appliances's data retrieved from Amazon (2018) where it contained total of 602,777 reviews and summaries. The dataset is introduced into the SQL server for data pre-processing purpose.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
-        p("For more information regardign the dataset please check the",em("Amazon Review Data (2018)'s"),"page by clicking",
-          a(href="http://deepyeti.ucsd.edu/jianmo/amazon/index.html", "Here",target="_blank"),style="text-align:center;color:black",width=2),
-    br(),
-    br(),
     p(strong("Future Works"), style = "font-size:2rem;font-family:times"),
     p("Due to the limitation of the local drive's processing power, this review system only able to conduct the sentiment analysis of a single catergory which is the 'Appliances' in the Amazon product review data.
-      Future works can be carry out by including all categories of product in the Amazon review data (2018).",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px")
+      Future works can be carry out by including all categories of product in the Amazon review data (2018).",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+    br(),
+    br(),
+    p(strong("Dataset"), style = "font-size:2rem;"),
+    p("The review dataset used in building this apps is the Appliances's data retrieved from Amazon (2018) where it contained total of 602,777 reviews and summaries. The dataset is introduced into the SQL server for data pre-processing purpose.",style="text-align:justify;color:black;background-color:lavender;padding:15px;border-radius:10px"),
+    p("For more information regardign the dataset please check the",em("Amazon Review Data (2018)'s"),"page by clicking",
+    a(href="http://deepyeti.ucsd.edu/jianmo/amazon/index.html", "Here",target="_blank"),style="text-align:center;color:black",width=2)
       )
       
       #This is sample page we can add in more details or remove it if necessary
